@@ -129,7 +129,7 @@ const HomePage = () => {
               ))}
             </Radio.Group>
           </div>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column mt-3">
             <button
               className="btn btn-danger"
               onClick={() => window.location.reload()}
@@ -143,11 +143,11 @@ const HomePage = () => {
           <div className="d-flex flex-wrap">
             {products?.map((p) => (
               <div className="card m-2" style={{ width: "18rem" }} key={p._id}>
-                <img
+                {/* <img
                   src={`/api/v1/product/product-photo/${p._id}`}
-                  className="card-img-top"
+                  className="card-img-top w-100 h-50 "
                   alt={p.name}
-                />
+                /> */}
                 <div className="card-body">
                   <h5 className="card-title">{p.name}</h5>
                   <p className="card-text">

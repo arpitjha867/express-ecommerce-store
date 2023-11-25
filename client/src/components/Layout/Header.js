@@ -6,7 +6,7 @@ import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
-
+import { SiDevexpress } from "react-icons/si";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
@@ -35,11 +35,11 @@ const Header = () => {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <div className="collapse navbar-collapse d-flex align-items-center" id="navbarTogglerDemo01">
             <Link to="/" className="navbar-brand">
-              🛒 Ecommerce App
+             <SiDevexpress className="mb-1 rounded-4"/> Express Store
             </Link>
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center gap-2 ">
               <SearchInput />
               <li className="nav-item">
                 <NavLink to="/" className="nav-link ">
