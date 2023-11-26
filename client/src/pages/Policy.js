@@ -7,19 +7,13 @@ const Policy = () => {
       <div className="row contactus ">
         <div className="col-md-6 ">
           <img
-            src="/images/contactus.jpeg"
+            src="/images/privacy.jpg"
             alt="contactus"
             style={{ width: "100%" }}
           />
         </div>
         <div className="col-md-4">
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
-          <p>add privacy policy</p>
+          <h3>We don't collect any form of data of the user . Except the data of the order placed and login data</h3>
         </div>
       </div>
     </Layout>

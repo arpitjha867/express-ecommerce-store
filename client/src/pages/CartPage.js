@@ -3,26 +3,28 @@ import Layout from "./../components/Layout/Layout";
 import { useCart } from "../context/cart";
 import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
   const [cart, setCart] = useCart();
   const navigate = useNavigate();
 
-  //total price
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      cart?.map((item) => {
-        total = total + item.price;
-      });
-      return total.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+// total price
+const totalPrice = () => {
+  try {
+    let total = 0;
+    cart?.map((item) => {
+      total = total + item.price;
+    });
+    return total.toLocaleString("en-IN", {
+      style: "currency",
+      currency: "INR",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
   //detele item
   const removeCartItem = (pid) => {
     try {
@@ -35,6 +37,45 @@ const CartPage = () => {
       console.log(error);
     }
   };
+
+    //checout func
+    const handleCheckout = async () => {
+      try {
+        const response = await axios.get("/api/v1/payments/getKey");
+        const {data} = await axios.post("/api/v1/payments/checkout",{
+          cart,
+          auth
+        })
+        var options = {
+          key : response?.data?.key, 
+          amount: data?.order?.amount, 
+          currency: "INR",
+          name: "Express Ecommerce",
+          description: "Checkout payment",
+          image: "https://avatars.githubusercontent.com/u/70438464?v=4",
+          order_id: data?.order?.id, 
+          callback_url: "/api/v1/payments/payment-varification",
+          prefill: {
+              name: auth?.user?.name,
+              email: auth?.user.email,
+              contact: auth?.user?.phone
+          },
+          notes: {
+              "address": "Express Ecommerce Office"
+        },
+        theme: {
+            "color": "#3399cc"
+        }
+    };
+    const razor = new window.Razorpay(options);
+    razor.open()
+    localStorage.removeItem('cart')
+    setCart([]);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!")
+    }
+  }
   return (
     <Layout>
       <div className="container">
@@ -84,29 +125,28 @@ const CartPage = () => {
             <p>Total | Checkout | Payment</p>
             <hr />
             <h4>Total : {totalPrice()} </h4>
-            {auth?.user?.address ? (
+            {auth?.token ? (
               <>
-                <div className="mb-3">
+                <div className="mb-3 d-flex flex-column gap-2 ">
                   <h4>Current Address</h4>
-                  <h5>{auth?.user?.address}</h5>
+                  <h5>{auth?.user?.address ? auth?.user?.address : "Please update you address" }</h5>
                   <button
-                    className="btn btn-outline-warning"
+                    className="btn btn-warning"
                     onClick={() => navigate("/dashboard/user/profile")}
                   >
                     Update Address
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleCheckout}
+                    disabled={auth?.user?.address ? false : true}
+                  >
+                    Checkout
                   </button>
                 </div>
               </>
             ) : (
               <div className="mb-3">
-                {auth?.token ? (
-                  <button
-                    className="btn btn-outline-warning"
-                    onClick={() => navigate("/dashboard/user/profile")}
-                  >
-                    Update Address
-                  </button>
-                ) : (
                   <button
                     className="btn btn-outline-warning"
                     onClick={() =>
@@ -117,7 +157,6 @@ const CartPage = () => {
                   >
                     Plase Login to checkout
                   </button>
-                )}
               </div>
             )}
           </div>

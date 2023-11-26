@@ -142,39 +142,42 @@ const HomePage = () => {
           <h1 className="text-center">All Products</h1>
           <div className="d-flex flex-wrap">
             {products?.map((p) => (
-              <div className="card m-2" style={{ width: "18rem" }} key={p._id}>
-                {/* <img
-                  src={`/api/v1/product/product-photo/${p._id}`}
-                  className="card-img-top w-100 h-50 "
-                  alt={p.name}
-                /> */}
-                <div className="card-body">
-                  <h5 className="card-title">{p.name}</h5>
-                  <p className="card-text">
-                    {p.description.substring(0, 30)}...
-                  </p>
-                  <p className="card-text"> $ {p.price}</p>
-                  <button
-                    className="btn btn-primary ms-1"
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
-                    More Details
-                  </button>
-                  <button
-                    className="btn btn-secondary ms-1"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
-                    }}
-                  >
-                    ADD TO CART
-                  </button>
-                </div>
-              </div>
+              <div className="card m-2" style={{ width: "14rem", height: "22rem" }} key={p._id}>
+  <img
+    src={`/api/v1/product/product-photo/${p._id}`}
+    className="card-img-top w-100 h-50"
+    alt={p.name}
+    style={{ objectFit: "cover" }}
+  />
+  <div className="card-body d-flex flex-column justify-content-between">
+    <div>
+      <h5 className="card-title">{p.name}</h5>
+      <p className="card-text">{p.description.substring(0, 30)}...</p>
+      <p className="card-text"> {p.price}</p>
+    </div>
+    <div className="d-flex justify-content-between ">
+      <button
+        className="btn btn-primary btn-sm"
+        style={{ fontSize: "0.8rem", padding: "0.2rem 0.4rem" }}
+        onClick={() => navigate(`/product/${p.slug}`)}
+      >
+        More Details
+      </button>
+      <button
+        className="btn btn-secondary btn-sm"
+        style={{ fontSize: "0.8rem", padding: "0.2rem 0.4rem" }}
+        onClick={() => {
+          setCart([...cart, p]);
+          localStorage.setItem("cart", JSON.stringify([...cart, p]));
+          toast.success("Item Added to cart");
+        }}
+      >
+        ADD TO CART
+      </button>
+    </div>
+  </div>
+</div>
+
             ))}
           </div>
           <div className="m-2 p-3">

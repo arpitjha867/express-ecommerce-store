@@ -1,3 +1,4 @@
+import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import { comparePassword, hashPassword } from "./../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
@@ -196,3 +197,22 @@ export const updateProfileController = async (req, res) => {
     });
   }
 };
+
+//all orders
+
+export const getOrdersController = async (req,res) =>{
+  try {
+    const userId = req.user._id;
+    const orders = await orderModel.find({buyer:userId})
+    res.status(200).send({
+      success:true,
+      orders
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success:false,
+      error
+    })
+  }
+}
